@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ form_title }}</title>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+   <nav class="navbar">
+    <div class="nav-container">
+
+        <a href="{{ url_for('dashboard') }}" class="brand">
+            <span class="brand-icon">🎓</span>
+            <span>StudentHub</span>
+        </a>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}"
+               class="{% if request.endpoint == 'dashboard' %}active{% endif %}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('students') }}"
+               class="{% if request.endpoint == 'students' %}active{% endif %}">
+                Students
+            </a>
+
+            <a href="{{ url_for('add_student') }}"
+               class="{% if request.endpoint == 'add_student' %}active{% endif %}">
+                Add Student
+            </a>
+
+            <a href="{{ url_for('courses') }}"
+               class="{% if request.endpoint == 'courses' %}active{% endif %}">
+                Courses
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="logout-link">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+</nav>
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <section class="form-container">
+
+            <h1>{{ form_title }}</h1>
+
+            <form method="POST">
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Name</label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value="{{ student.name if student else '' }}"
+                        required
+                    >
+                </div>
+
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ student.email if student else '' }}"
+                        required
+                    >
+                </div>
+
+
+                <!-- Phone -->
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+
+                    <input
+                        type="text"
+                        id="phone"
+                        name="phone"
+                        value="{{ student.phone if student else '' }}"
+                    >
+                </div>
+
+
+                <!-- Gender -->
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+
+                    <select id="gender" name="gender">
+
+                        <option
+                            value="Male"
+                            {% if student and student.gender == "Male" %}selected{% endif %}
+                        >
+                            Male
+                        </option>
+
+                        <option
+                            value="Female"
+                            {% if student and student.gender == "Female" %}selected{% endif %}
+                        >
+                            Female
+                        </option>
+
+                    </select>
+                </div>
+
+
+                <!-- Course -->
+                <div class="form-group">
+                    <label for="course_id">Course</label>
+
+                    <select
+                        id="course_id"
+                        name="course_id"
+                        required
+                    >
+
+                        <option value="">Select Course</option>
+
+                        {% for course in courses %}
+
+                        <option
+                            value="{{ course.id }}"
+                            {% if student and student.course_id == course.id %}selected{% endif %}
+                        >
+                            {{ course.name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+                </div>
+
+
+                <!-- Date of Birth -->
+                <div class="form-group">
+                    <label for="date_of_birth">Date of Birth</label>
+
+                    <input
+                        type="date"
+                        id="date_of_birth"
+                        name="date_of_birth"
+                        value="{{ student.date_of_birth if student else '' }}"
+                    >
+                </div>
+
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label for="status">Status</label>
+
+                    <select id="status" name="status">
+
+                        <option
+                            value="Active"
+                            {% if student and student.status == "Active" %}selected{% endif %}
+                        >
+                            Active
+                        </option>
+
+                        <option
+                            value="Inactive"
+                            {% if student and student.status == "Inactive" %}selected{% endif %}
+                        >
+                            Inactive
+                        </option>
+
+                    </select>
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="form-actions">
+
+                    <a
+                        href="{{ url_for('students') }}"
+                        class="btn btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn"
+                    >
+                        {% if student %}
+                            Update Student
+                        {% else %}
+                            Save Student
+                        {% endif %}
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 StudentHub. All rights reserved.</p>
+    </footer>
+
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+__pycache__/
+*.py[cod]
+studenthub.db
+sqlite3.dll
+sqlite3.def

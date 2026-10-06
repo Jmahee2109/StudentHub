@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Courses - StudentHub</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+    <div class="nav-container">
+
+        <a href="{{ url_for('dashboard') }}" class="brand">
+            <span class="brand-icon">🎓</span>
+            <span>StudentHub</span>
+        </a>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}"
+               class="{% if request.endpoint == 'dashboard' %}active{% endif %}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('students') }}"
+               class="{% if request.endpoint == 'students' %}active{% endif %}">
+                Students
+            </a>
+
+            <a href="{{ url_for('add_student') }}"
+               class="{% if request.endpoint == 'add_student' %}active{% endif %}">
+                Add Student
+            </a>
+
+            <a href="{{ url_for('courses') }}"
+               class="{% if request.endpoint == 'courses' %}active{% endif %}">
+                Courses
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="logout-link">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+ </nav> 
+
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <!-- Page Header -->
+        <section class="page-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    ACADEMIC MANAGEMENT
+                </p>
+
+                <h1>
+                    Courses
+                </h1>
+
+                <p>
+                    Manage the courses available in StudentHub and
+                    keep track of enrolled students.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- Statistics -->
+        <section class="stats-grid">
+
+            <!-- Total Courses -->
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📚
+                </div>
+
+                <div>
+                    <h3>
+                        {{ total_courses }}
+                    </h3>
+
+                    <p>
+                        Total Courses
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- Courses With Students -->
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🎓
+                </div>
+
+                <div>
+                    <h3>
+                        {{ used_courses }}
+                    </h3>
+
+                    <p>
+                        Courses With Students
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- Total Students -->
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👥
+                </div>
+
+                <div>
+                    <h3>
+                        {{ total_students }}
+                    </h3>
+
+                    <p>
+                        Total Students
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Add Course -->
+        <section class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Add New Course
+                    </h2>
+
+                    <p>
+                        Create a new course that can be assigned
+                        to students.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('courses') }}"
+                class="form-grid"
+            >
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="add"
+                >
+
+
+                <div class="form-group">
+
+                    <label for="course_name">
+                        Course Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="course_name"
+                        name="course_name"
+                        placeholder="Enter course name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group form-button">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        + Add Course
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- Course List -->
+        <section class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Course List
+                    </h2>
+
+                    <p>
+                        All courses currently available in StudentHub.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if courses %}
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Course Name
+                            </th>
+
+                            <th>
+                                Students
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for course in courses %}
+
+                        <tr>
+
+                            <!-- Course ID -->
+                            <td>
+                                {{ course.id }}
+                            </td>
+
+
+                            <!-- Course Name -->
+                            <td>
+
+                                <strong>
+                                    {{ course.name }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- Student Count -->
+                            <td>
+
+                                {% if course.student_count > 0 %}
+
+                                    <span class="badge badge-success">
+
+                                        {{ course.student_count }}
+
+                                        student{% if course.student_count != 1 %}s{% endif %}
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge badge-secondary">
+                                        0 students
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Actions -->
+                            <td>
+
+                                <div class="action-buttons">
+
+                                    <!-- Edit Course -->
+                                    <details class="edit-course">
+
+                                        <summary class="btn btn-secondary">
+                                            Edit
+                                        </summary>
+
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for('courses') }}"
+                                            class="edit-form"
+                                        >
+
+                                            <input
+                                                type="hidden"
+                                                name="action"
+                                                value="edit"
+                                            >
+
+
+                                            <input
+                                                type="hidden"
+                                                name="course_id"
+                                                value="{{ course.id }}"
+                                            >
+
+
+                                            <input
+                                                type="text"
+                                                name="course_name"
+                                                value="{{ course.name }}"
+                                                required
+                                            >
+
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-primary"
+                                            >
+                                                Save
+                                            </button>
+
+                                        </form>
+
+                                    </details>
+
+
+                                    <!-- Delete Course -->
+                                    {% if course.student_count == 0 %}
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for('delete_course', course_id=course.id) }}"
+                                            onsubmit="return confirm('Are you sure you want to delete this course?');"
+                                        >
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-danger"
+                                            >
+                                                Delete
+                                            </button>
+
+                                        </form>
+
+                                    {% else %}
+
+                                        <span class="text-muted">
+                                            In use
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+                <!-- Empty State -->
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        No Courses Found
+                    </h3>
+
+                    <p>
+                        There are currently no courses available.
+                        Add your first course above.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+
+        <p>
+            StudentHub &copy; 2026
+        </p>
+
+    </footer>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

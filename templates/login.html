@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - StudentHub</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* ========================================
+           LOGIN PAGE
+        ======================================== */
+
+        .login-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eff6ff, #eef2ff);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px;
+        }
+
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 430px;
+        }
+
+
+        /* ========================================
+           BRAND
+        ======================================== */
+
+        .login-brand {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+
+        .login-brand-icon {
+            width: 58px;
+            height: 58px;
+
+            margin: 0 auto 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #2563eb;
+            color: white;
+
+            border-radius: 15px;
+
+            font-size: 28px;
+
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+
+        .login-brand h1 {
+            color: #111827;
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+
+
+        .login-brand p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* ========================================
+           LOGIN CARD
+        ======================================== */
+
+        .login-card {
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 15px 40px rgba(15, 23, 42, 0.10),
+                0 3px 10px rgba(15, 23, 42, 0.04);
+
+            border: 1px solid #e5e7eb;
+        }
+
+
+        .login-card h2 {
+            color: #111827;
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+
+        .login-card-subtitle {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+
+        /* ========================================
+           LOGIN FORM
+        ======================================== */
+
+        .login-form {
+            margin-top: 0;
+        }
+
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+        }
+
+
+        .login-form label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #374151;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        .login-form input {
+            width: 100%;
+            min-width: 0;
+
+            margin: 0;
+
+            padding: 12px 14px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            background: #ffffff;
+        }
+
+
+        .login-form input:focus {
+            outline: none;
+
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+
+        /* ========================================
+           LOGIN BUTTON
+        ======================================== */
+
+        .login-button {
+            width: 100%;
+
+            margin-top: 5px;
+
+            padding: 12px 18px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #2563eb;
+            color: white;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .login-button:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 5px 12px rgba(37, 99, 235, 0.25);
+        }
+
+
+        /* ========================================
+           PASSWORD
+        ======================================== */
+
+        .password-wrapper {
+            position: relative;
+        }
+
+
+        .password-wrapper input {
+            padding-right: 75px;
+        }
+
+
+        .show-password {
+            position: absolute;
+
+            right: 12px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+            background: transparent;
+
+            color: #2563eb;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+
+        .show-password:hover {
+            color: #1d4ed8;
+        }
+
+
+        /* ========================================
+           FLASH MESSAGE
+        ======================================== */
+
+        .login-alert {
+            padding: 12px 14px;
+
+            margin-bottom: 20px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+        }
+
+
+        .login-alert.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+
+        .login-alert.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+
+        /* ========================================
+           FOOTER
+        ======================================== */
+
+        .login-footer {
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #9ca3af;
+
+            font-size: 13px;
+        }
+
+
+        /* ========================================
+           MOBILE
+        ======================================== */
+
+        @media (max-width: 480px) {
+
+            .login-page {
+                padding: 20px;
+            }
+
+
+            .login-card {
+                padding: 25px 20px;
+            }
+
+
+            .login-brand h1 {
+                font-size: 25px;
+            }
+
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <main class="login-page">
+
+        <div class="login-wrapper">
+
+            <!-- Brand -->
+            <div class="login-brand">
+
+                <div class="login-brand-icon">
+                    🎓
+                </div>
+
+                <h1>
+                    StudentHub
+                </h1>
+
+                <p>
+                    Student Management System
+                </p>
+
+            </div>
+
+
+            <!-- Login Card -->
+            <section class="login-card">
+
+                <h2>
+                    Welcome back
+                </h2>
+
+                <p class="login-card-subtitle">
+                    Sign in to access your StudentHub account.
+                </p>
+
+
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+
+                    {% if messages %}
+
+                        {% for category, message in messages %}
+
+                            <div class="login-alert {{ category }}">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                {% endwith %}
+
+
+                <!-- Login Form -->
+                <form
+                    method="POST"
+                    action="{{ url_for('login') }}"
+                    class="login-form"
+                >
+
+                    <!-- Email -->
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Password -->
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="show-password"
+                                onclick="togglePassword()"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Login -->
+                    <button
+                        type="submit"
+                        class="login-button"
+                    >
+                        Sign In
+                    </button>
+
+                </form>
+
+            </section>
+
+
+            <!-- Footer -->
+            <div class="login-footer">
+                StudentHub &copy; 2026
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+        function togglePassword() {
+
+            const passwordInput =
+                document.getElementById("password");
+
+            const button =
+                document.querySelector(".show-password");
+
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+                button.textContent = "Hide";
+
+            } else {
+
+                passwordInput.type = "password";
+                button.textContent = "Show";
+
+            }
+        }
+    </script>
+
+</body>
+</html>
